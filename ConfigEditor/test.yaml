@@ -1,0 +1,4 @@
+message: "hello world"
+data:
+  inside_data: true
+
