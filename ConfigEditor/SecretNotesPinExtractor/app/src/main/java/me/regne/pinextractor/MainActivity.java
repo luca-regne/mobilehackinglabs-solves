@@ -14,8 +14,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "PinExtractor";
     private static final String TAG_FOUND = "PinFound";
     private TextView textView;
-    private ProgressBar progress;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
         textView = findViewById(R.id.textView);
         textView.setText("Searching...");
-        ProgressBar progressBar=(ProgressBar) findViewById(R.id.progressBar); // initiate the progress bar
+        ProgressBar progressBar= findViewById(R.id.progressBar); // initiate the progress bar
         progressBar.setMax(9999);
 
         Thread th = new Thread(() -> {
@@ -47,9 +45,7 @@ public class MainActivity extends AppCompatActivity {
                                 Log.i(TAG_FOUND, "PIN FOUND: " + pin);
 
                                 final String foundSecret = secret;
-                                runOnUiThread(() -> {
-                                    textView.setText("PIN FOUND: " + currentPin + "\n" + foundSecret);
-                                });
+                                runOnUiThread(() -> textView.setText("PIN FOUND: " + currentPin + "\n" + foundSecret));
 
                                 return;
                             }
@@ -58,9 +54,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            runOnUiThread(() -> {
-                textView.setText("Search completed. No valid PIN found.");
-            });
+            runOnUiThread(() -> textView.setText("Search completed. No valid PIN found."));
         });
 
         th.start();
