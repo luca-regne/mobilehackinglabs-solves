@@ -23,37 +23,29 @@ public class MainActivity extends AppCompatActivity {
 
         textView = findViewById(R.id.textView);
         textView.setText("Searching...");
-        ProgressBar progressBar= findViewById(R.id.progressBar); // initiate the progress bar
+        ProgressBar progressBar = findViewById(R.id.progressBar); // initiate the progress bar
         progressBar.setMax(9999);
 
         Thread th = new Thread(() -> {
-            for(int i1 = 0; i1 < 10; i1++) {
-                for(int i2 = 0; i2 < 10; i2++) {
-                    for(int i3 = 0; i3 < 10; i3++) {
-                        for(int i4 = 0; i4 < 10; i4++) {
-                            String pin = String.format("%d%d%d%d", i1, i2, i3, i4);
-                            Log.d(TAG, "Testing PIN: " + pin);
+            for (int pin = 0; pin < 10000; pin++) {
+                String pinString = String.format("%04d", pin);
+                Log.d(TAG, "Testing PIN: " + pinString);
 
-                            final String currentPin = pin;
-                            runOnUiThread(() -> {
-                                textView.setText("Testing PIN: " + currentPin);
-                                progressBar.setProgress(Integer.parseInt(currentPin));
-                            });
+                runOnUiThread(() -> {
+                    textView.setText("Testing PIN: " + pinString);
+                    progressBar.setProgress(Integer.parseInt(pinString));
+                });
 
-                            String secret = checkPin(pin);
-                            if(secret != null && secret.contains("CTF{")) {
-                                Log.i(TAG_FOUND, "PIN FOUND: " + pin);
+                String secret = checkPin(pinString);
+                if (secret != null && secret.contains("CTF{")) {
+                    Log.i(TAG_FOUND, "PIN FOUND: " + pin);
 
-                                final String foundSecret = secret;
-                                runOnUiThread(() -> textView.setText("PIN FOUND: " + currentPin + "\n" + foundSecret));
+                    final String foundSecret = secret;
+                    runOnUiThread(() -> textView.setText("PIN FOUND: " + pinString + "\n" + foundSecret));
 
-                                return;
-                            }
-                        }
-                    }
+                    return;
                 }
             }
-
             runOnUiThread(() -> textView.setText("Search completed. No valid PIN found."));
         });
 
@@ -69,13 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
             Log.d(TAG, "Querying with selection: " + selection);
 
-            Cursor cursor = getContentResolver().query(
-                    uri,
-                    null,
-                    selection,
-                    null,
-                    null
-            );
+            Cursor cursor = getContentResolver().query(uri, null, selection, null, null);
 
             if (cursor != null) {
                 if (cursor.moveToFirst()) {
