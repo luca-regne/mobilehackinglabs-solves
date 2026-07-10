@@ -1,3 +1,11 @@
 *.apk
-*.jadx
 *.zip
+
+
+# Common JADX outputs
+*.jadx
+sources/
+resources/
+
+# Hopper outputs
+*.hop
