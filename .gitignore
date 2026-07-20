@@ -1,6 +1,10 @@
+# Common Binary files
 *.apk
 *.zip
+*.ipa
 
+# Common iOS reversing artifacts
+Payload/
 
 # Common JADX outputs
 *.jadx
